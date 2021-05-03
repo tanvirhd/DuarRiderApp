@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Profile"
+        android:id="@+id/profile" />
+
+    <item android:title="Delivery History"
+        android:id="@+id/deliveryHistory" />
+
+    <item android:title="Daily Clearance"
+        android:id="@+id/dailyClearance"/>
+
+    <item android:title="My Wallet"
+        android:id="@+id/myWallet" />
+
+    <item android:title="Log-Out"
+        android:id="@+id/logout" />
+</menu>
