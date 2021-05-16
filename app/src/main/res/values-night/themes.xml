@@ -21,11 +21,11 @@
 
     <style name="ExtendedAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">24dp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black0</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="collapsingToolbarLayoutTitleColor" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/black4</item>
+        <item name="android:textColor">@color/black0</item>
     </style>
 </resources>

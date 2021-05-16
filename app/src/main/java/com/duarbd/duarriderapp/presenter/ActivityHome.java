@@ -7,6 +7,7 @@ import androidx.core.view.GravityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.duarbd.duarriderapp.R;
@@ -50,12 +52,20 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
 
         initNavDrawer();
         init();
+
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAssignedRidesFromServer("swipeRefresh");
+            }
+        });
     }
 
 
     void init(){
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(Utils.getPref(KEYS.RIDER_NAME,"Rider Application"));
+        initHeader();
 
         dialogLoading=Utils.setupLoadingDialog(ActivityHome.this);
         viewModelRiderApp=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(ViewModelRiderApp.class);
@@ -65,6 +75,16 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
         binding.recyc.setLayoutManager(new LinearLayoutManager(ActivityHome.this));
         binding.recyc.setAdapter(adapterAssignedRide);
 
+    }
+
+    void initHeader(){
+        View header =  binding.homeNav.getHeaderView(0);
+        TextView riderName = header.findViewById(R.id.tvHeaderRiderName);
+        TextView tvHeaderInitial=header.findViewById(R.id.tvHeaderInitial);
+
+        String ridername=Utils.getPref(KEYS.RIDER_NAME,"Rider");
+        riderName.setText(ridername);
+        tvHeaderInitial.setText(ridername.charAt(0)+"");
     }
 
     void initNavDrawer(){
@@ -97,10 +117,37 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
                                 assignedRideList.clear();
                                 adapterAssignedRide.notifyDataSetChanged();
                                 dialogLoading.dismiss();
+                                Toast.makeText(ActivityHome.this, "No ride assigned yet", Toast.LENGTH_SHORT).show();
                             }
                         }else {
-                            Toast.makeText(ActivityHome.this, "No ride assigned yet", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityHome.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
                             dialogLoading.dismiss();
+                        }
+                    }
+                });
+    }
+
+    void getAssignedRidesFromServer(String swipeRefresh){
+        ModelRider rider=new ModelRider(Utils.getPref(KEYS.RIDER_ID,""));
+        viewModelRiderApp.getAssignedRide(rider).observe(ActivityHome.this,
+                new Observer<List<ModelDeliveryRequest>>() {
+                    @Override
+                    public void onChanged(List<ModelDeliveryRequest> modelDeliveryRequests) {
+                        if(modelDeliveryRequests!=null&&modelDeliveryRequests.get(0).getResponse().equals("1")){
+                            if(!modelDeliveryRequests.get(0).getStatus().equals("NothingFound")){
+                                assignedRideList.clear();
+                                assignedRideList.addAll(modelDeliveryRequests);
+                                adapterAssignedRide.notifyDataSetChanged();
+                                binding.swipeRefresh.setRefreshing(false);
+                            }else {
+                                assignedRideList.clear();
+                                adapterAssignedRide.notifyDataSetChanged();
+                                binding.swipeRefresh.setRefreshing(false);
+                                Toast.makeText(ActivityHome.this, "No ride assigned yet", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(ActivityHome.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
+                            binding.swipeRefresh.setRefreshing(false);
                         }
                     }
                 });
@@ -117,25 +164,22 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.profile:
-                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
-                binding.drawerlayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(ActivityHome.this,ActivityProfile.class));
                 break;
-            case R.id.deliveryHistory:
-                Toast.makeText(this, "Delivery History", Toast.LENGTH_SHORT).show();
-                binding.drawerlayout.closeDrawer(GravityCompat.START);
+            case R.id.rideHistory:
+                startActivity(new Intent(ActivityHome.this,ActivityDeliveryHistory.class));
                 break;
             case R.id.dailyClearance:
-                Toast.makeText(this, "Daily Clearance", Toast.LENGTH_SHORT).show();
-                binding.drawerlayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(ActivityHome.this,ActivityDailyClearance.class));;
                 break;
             case R.id.myWallet:
-                Toast.makeText(this, "My Wallet", Toast.LENGTH_SHORT).show();
-                binding.drawerlayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(ActivityHome.this,ActivityMyWallet.class));
                 break;
-            case R.id.logout:
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-                binding.drawerlayout.closeDrawer(GravityCompat.START);
-                break;
+            /*case R.id.logout:
+                Utils.savePrefBoolean(KEYS.IS_LOGGED_IN,false);
+                startActivity(new Intent(ActivityHome.this,ActivityLogin.class));
+                finish();
+                break;*/
         }
         return true;
     }
@@ -178,7 +222,7 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
 
     @Override
     public void onAssignedRideClicked(ModelDeliveryRequest delivery) {
-
+        Log.d(TAG, "onAssignedRideClicked: check1 DC="+delivery.getDeliveryCharge());
         startActivity(new Intent(ActivityHome.this,ActivityDeliveryDetails.class)
           .putExtra(getResources().getString(R.string.parcel),delivery));
     }

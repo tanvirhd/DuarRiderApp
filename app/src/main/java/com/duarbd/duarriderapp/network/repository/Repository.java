@@ -10,6 +10,7 @@ import com.duarbd.duarriderapp.model.ModelDeliveryRequest;
 import com.duarbd.duarriderapp.model.ModelResponse;
 import com.duarbd.duarriderapp.model.ModelResponseRider;
 import com.duarbd.duarriderapp.model.ModelRider;
+import com.duarbd.duarriderapp.model.ModelRiderSalary;
 import com.duarbd.duarriderapp.network.ApiClient;
 import com.duarbd.duarriderapp.network.ApiInterface;
 
@@ -80,5 +81,59 @@ public class Repository {
                     }
                 });
         return result;
+    }
+
+    public LiveData<ModelRiderSalary> getRiderSalary(ModelRider rider){
+        MutableLiveData<ModelRiderSalary> result =new MutableLiveData<>();
+        apiRequest.getRiderSalary(rider).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ModelRiderSalary>() {
+                    @Override
+                    public void accept(ModelRiderSalary modelRiderSalary) throws Exception {
+                        result.postValue(modelRiderSalary);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "getRiderSalary: error:"+throwable.getMessage());
+                    }
+                });
+        return  result;
+    }
+
+    public  LiveData<ModelResponse> collectRiderSalary (ModelRider rider){
+        MutableLiveData<ModelResponse> result =new MutableLiveData<>();
+        apiRequest.collectRiderSalary(rider).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ModelResponse>() {
+                    @Override
+                    public void accept(ModelResponse modelResponse) throws Exception {
+                        result.postValue(modelResponse);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "collectRiderSalary: error:"+throwable.getMessage());
+                    }
+                });
+        return result;
+    }
+
+    public LiveData<List<ModelDeliveryRequest>> getDeliveryHistoryByRiderId(ModelRider rider){
+        MutableLiveData<List<ModelDeliveryRequest>> result=new MutableLiveData<>();
+        apiRequest.getDeliveryHistoryByRiderId(rider).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<ModelDeliveryRequest>>() {
+                    @Override
+                    public void accept(List<ModelDeliveryRequest> modelDeliveryRequests) throws Exception {
+                        result.postValue(modelDeliveryRequests);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "getDeliveryHistoryByRiderId: error:"+throwable.getMessage());
+                    }
+                });
+        return  result;
     }
 }

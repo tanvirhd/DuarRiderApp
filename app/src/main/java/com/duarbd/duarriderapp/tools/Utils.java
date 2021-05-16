@@ -10,6 +10,10 @@ import android.view.Window;
 
 import com.duarbd.duarriderapp.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Utils {
     // save data to sharedPreference
     public static void savePref(String name, String value) {
@@ -85,4 +89,13 @@ public class Utils {
 
         return hour+":"+min;
     }
+
+    public static String[] getCustentDateArray(){
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormatDate = new SimpleDateFormat("dd-MM-yyyy");
+        String date=dateFormatDate.format(calendar.getTime());
+        String[] seperated=date.split("-");
+        return seperated;
+    }
+
 }

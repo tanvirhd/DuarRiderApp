@@ -45,12 +45,13 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deliveryDetails.setDeliveryStatus(6);
+                Log.d(TAG, "onClick: check2 DC="+deliveryDetails.getDeliveryCharge());
                 viewModelRiderApp.updateDeliveryStatusByRequestId(deliveryDetails).observe(ActivityDeliveryDetails.this,
                         new Observer<ModelResponse>() {
                             @Override
                             public void onChanged(ModelResponse modelResponse) {
                                 if(modelResponse!=null&&modelResponse.getResponse()==1){
-                                    Toast.makeText(ActivityDeliveryDetails.this, "Ride Complete", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityDeliveryDetails.this, "Ride Complete.Status: "+modelResponse.getStatus(), Toast.LENGTH_LONG).show();
                                     onBackPressed();
                                 }else{
                                     dialogLoading.dismiss();
@@ -130,6 +131,13 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
                 binding.tvCOD.setVisibility(View.VISIBLE);
                 binding.groupClearance.setVisibility(View.GONE);
                 binding.btnFinishRide.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                binding.tvCallClient.setVisibility(View.VISIBLE);
+                binding.tvCallCustomer.setVisibility(View.VISIBLE);
+                binding.tvCOD.setVisibility(View.GONE);
+                binding.groupClearance.setVisibility(View.GONE);
+                binding.btnFinishRide.setVisibility(View.GONE);
                 break;
         }
 

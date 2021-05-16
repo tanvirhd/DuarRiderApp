@@ -13,7 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuarRiderApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".presenter.ActivityDeliveryDetails"></activity>
+        <activity android:name=".presenter.ActivityProfile"></activity>
+        <activity android:name=".presenter.ActivityDailyClearance" />
+        <activity android:name=".presenter.ActivityDeliveryHistory" />
+        <activity
+            android:name=".presenter.ActivityMyWallet"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".presenter.ActivityDeliveryDetails" />
         <activity android:name=".presenter.ActivityLogin" />
         <activity android:name=".presenter.ActivitySplash">
             <intent-filter>

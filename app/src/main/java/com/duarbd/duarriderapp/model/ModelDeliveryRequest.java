@@ -52,9 +52,11 @@ public class ModelDeliveryRequest implements Parcelable {
     @SerializedName("pickupCharge")
     @Expose
     private int pickupCharge;
+
     @SerializedName("deliveryCharge")
     @Expose
     private int deliveryCharge;
+
     @SerializedName("productPrice")
     @Expose
     private int productPrice;
@@ -77,6 +79,10 @@ public class ModelDeliveryRequest implements Parcelable {
     @SerializedName("riderid")
     @Expose
     private String riderid;
+
+    @SerializedName("riderClearance")
+    @Expose
+    private  String riderClearance;
 
     @SerializedName("clientPaymentStatus")
     @Expose
@@ -197,6 +203,14 @@ public class ModelDeliveryRequest implements Parcelable {
 
     public void setDeliveryAddressExtra(String deliveryAddressExtra) {
         this.deliveryAddressExtra = deliveryAddressExtra;
+    }
+
+    public String getRiderClearance() {
+        return riderClearance;
+    }
+
+    public void setRiderClearance(String riderClearance) {
+        this.riderClearance = riderClearance;
     }
 
     public String getPickUpAddress() {

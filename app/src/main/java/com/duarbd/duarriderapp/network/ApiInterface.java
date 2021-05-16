@@ -4,6 +4,7 @@ import com.duarbd.duarriderapp.model.ModelDeliveryRequest;
 import com.duarbd.duarriderapp.model.ModelResponse;
 import com.duarbd.duarriderapp.model.ModelResponseRider;
 import com.duarbd.duarriderapp.model.ModelRider;
+import com.duarbd.duarriderapp.model.ModelRiderSalary;
 
 
 import java.util.List;
@@ -22,4 +23,17 @@ public interface ApiInterface {
 
     @POST("updateAssignedRideStatusById.php")
     Observable<ModelResponse> updateDeliveryStatusByRequestId(@Body  ModelDeliveryRequest request);
+
+    @POST("getDeliveryHistoryByRiderid.php")//ready
+    Observable<List<ModelDeliveryRequest>> getDeliveryHistoryByRiderId(@Body ModelRider rider);
+
+    @POST("collectRiderPayment.php")
+    void m1();
+
+    @POST("getRiderPayment.php")
+    Observable<ModelRiderSalary> getRiderSalary(@Body ModelRider rider);
+
+    @POST("collectRiderPayment.php")
+    Observable<ModelResponse> collectRiderSalary(@Body ModelRider rider);
+
 }
