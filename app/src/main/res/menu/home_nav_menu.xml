@@ -11,4 +11,7 @@
 
     <item android:title="My Wallet"
         android:id="@+id/myWallet" />
+
+    <item android:title="Log-out"
+        android:id="@+id/logout" />
 </menu>

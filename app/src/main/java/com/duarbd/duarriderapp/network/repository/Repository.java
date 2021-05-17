@@ -136,4 +136,40 @@ public class Repository {
                 });
         return  result;
     }
+
+    public  LiveData<ModelResponse> updateRiderPassword(ModelRider rider){
+        MutableLiveData<ModelResponse> result=new MutableLiveData<>();
+        apiRequest.updateRiderPassword(rider).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ModelResponse>() {
+                    @Override
+                    public void accept(ModelResponse modelResponse) throws Exception {
+                        result.postValue(modelResponse);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "updateRiderPassword: error:"+throwable.getMessage());
+                    }
+                });
+        return result;
+    }
+
+    public LiveData<ModelRider> getRiderInformation(ModelRider rider){
+        MutableLiveData<ModelRider> result=new MutableLiveData<>();
+        apiRequest.getRiderInformation(rider).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ModelRider>() {
+                    @Override
+                    public void accept(ModelRider rider) throws Exception {
+                        result.postValue(rider);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "getRiderInformation: error:"+throwable.getMessage());
+                    }
+                });
+        return result;
+    }
 }

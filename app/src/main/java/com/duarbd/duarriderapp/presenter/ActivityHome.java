@@ -175,11 +175,11 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
             case R.id.myWallet:
                 startActivity(new Intent(ActivityHome.this,ActivityMyWallet.class));
                 break;
-            /*case R.id.logout:
+            case R.id.logout:
                 Utils.savePrefBoolean(KEYS.IS_LOGGED_IN,false);
                 startActivity(new Intent(ActivityHome.this,ActivityLogin.class));
                 finish();
-                break;*/
+                break;
         }
         return true;
     }

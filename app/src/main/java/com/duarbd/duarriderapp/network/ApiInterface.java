@@ -36,4 +36,9 @@ public interface ApiInterface {
     @POST("collectRiderPayment.php")
     Observable<ModelResponse> collectRiderSalary(@Body ModelRider rider);
 
+    @POST("updateRiderPassword.php")
+    Observable<ModelResponse> updateRiderPassword(@Body ModelRider rider);
+
+    @POST("getRiderInformationById.php")
+    Observable<ModelRider> getRiderInformation(@Body ModelRider rider);
 }

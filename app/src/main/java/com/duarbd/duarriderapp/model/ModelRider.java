@@ -24,6 +24,13 @@ public class ModelRider {
     @Expose
     private String password;
 
+    @SerializedName("response")
+    @Expose
+    private Integer response;
+    @SerializedName("status")
+    @Expose
+    private String status;
+
     public ModelRider(String riderid, String riderName, String riderContactNumber, String vehicleType, String password) {
         this.riderid = riderid;
         this.riderName = riderName;
@@ -79,5 +86,21 @@ public class ModelRider {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getResponse() {
+        return response;
+    }
+
+    public void setResponse(Integer response) {
+        this.response = response;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

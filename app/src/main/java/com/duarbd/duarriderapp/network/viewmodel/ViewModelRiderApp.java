@@ -46,4 +46,10 @@ public class ViewModelRiderApp extends AndroidViewModel {
     public LiveData<List<ModelDeliveryRequest>> getDeliveryHistoryByRiderId(ModelRider rider){
         return repository.getDeliveryHistoryByRiderId(rider);
     }
+    public  LiveData<ModelResponse> updateRiderPassword(ModelRider rider){
+        return repository.updateRiderPassword(rider);
+    }
+    public LiveData<ModelRider> getRiderInformation(ModelRider rider){
+        return repository.getRiderInformation(rider);
+    }
 }

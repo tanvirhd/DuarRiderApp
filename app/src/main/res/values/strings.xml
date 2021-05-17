@@ -3,4 +3,5 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="parcel">parcel</string>
+    <string name="updatePasswordNote">Looks like you haven\'t updated your password yet !</string>
 </resources>

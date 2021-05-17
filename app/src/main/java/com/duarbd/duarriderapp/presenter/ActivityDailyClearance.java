@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -87,7 +88,8 @@ public class ActivityDailyClearance extends AppCompatActivity implements Adapter
 
     @Override
     public void onMoreClicked(ModelDeliveryRequest delivery) {
-
+        startActivity(new Intent(ActivityDailyClearance.this,ActivityDeliveryDetails.class)
+                .putExtra(getResources().getString(R.string.parcel),delivery));
     }
 
     void getDeliveryClearanceFromServer(String date){

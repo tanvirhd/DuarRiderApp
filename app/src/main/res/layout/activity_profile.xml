@@ -36,11 +36,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvBusinessInitial"
+                android:id="@+id/tvInitial"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="24dp"
-                android:text="M"
+                android:text="o"
                 android:textSize="42dp"
                 android:textStyle="bold"
                 android:textColor="@color/black0"
@@ -56,21 +56,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="Monir Hossain"
+                android:text="n/a"
                 android:textColor="@color/black0"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/tvBusinessInitial"
+                app:layout_constraintBottom_toBottomOf="@+id/tvInitial"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tvBusinessInitial"
-                app:layout_constraintTop_toTopOf="@+id/tvBusinessInitial"
+                app:layout_constraintStart_toEndOf="@+id/tvInitial"
+                app:layout_constraintTop_toTopOf="@+id/tvInitial"
                 app:layout_constraintVertical_bias="0.32999998" />
 
             <TextView
                 android:id="@+id/tvRiderOf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Bicycle Rider"
+                android:text="n/a"
                 android:textColor="@color/black0"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/tvRiderName"
@@ -101,7 +101,7 @@
                 android:background="@drawable/bg_cr8_fill_liteash"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
-                android:text="01521314936"
+                android:text="n/a"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitleContact" />
@@ -124,15 +124,109 @@
                 android:background="@drawable/bg_cr8_fill_liteash"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
-                android:text="Bicycle"
+                android:text="n/a"
                 app:layout_constraintEnd_toEndOf="@+id/tvContactNumber"
                 app:layout_constraintStart_toStartOf="@+id/tvContactNumber"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitleVehicleType" />
 
 
+            <TextView
+                android:id="@+id/tvNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="@string/updatePasswordNote"
+                android:textColor="@color/black4"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="@+id/tvVehicleType"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvVehicleType"
+                app:layout_constraintTop_toBottomOf="@+id/tvVehicleType" />
+
+        <TextView
+            android:id="@+id/btnShowUpdatePassWordBox"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_cr8_fill_yellow2"
+            android:gravity="center"
+            android:padding="8dp"
+            android:paddingBottom="8dp"
+            android:text="Update Password"
+            android:textColor="@color/black0"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvNote"
+            app:layout_constraintTop_toBottomOf="@+id/tvNote"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvNote,btnShowUpdatePassWordBox" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomsheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        android:background="#f7f7f7"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <EditText
+            android:id="@+id/newPass"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_cr8_stroke_only_yellow"
+            android:hint="New Password"
+            android:paddingLeft="8dp"
+            android:inputType="textPassword"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+            android:id="@+id/retypedPass"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_cr8_stroke_only_yellow"
+            android:hint="Retype Password"
+            android:paddingLeft="8dp"
+            android:inputType="textPassword"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/newPass"/>
+
+        <TextView
+            android:id="@+id/updatePassWord"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="Update Password"
+            android:textColor="@color/black0"
+            android:textSize="16dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_cr8_fill_yellow2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/retypedPass"
+            app:layout_constraintStart_toStartOf="@+id/retypedPass"
+            app:layout_constraintTop_toBottomOf="@id/retypedPass" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

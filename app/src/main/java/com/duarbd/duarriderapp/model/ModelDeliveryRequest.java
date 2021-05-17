@@ -100,9 +100,6 @@ public class ModelDeliveryRequest implements Parcelable {
     @Expose
     private String status;
 
-
-
-
     public ModelDeliveryRequest(){
 
     }
