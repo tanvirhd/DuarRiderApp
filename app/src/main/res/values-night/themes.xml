@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.DuarRiderApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.DuarRiderApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/yellow2</item>
-        <item name="colorPrimaryVariant">@color/yellow2</item>
+        <item name="colorPrimary">@color/yellow_bright</item>
+        <item name="colorPrimaryVariant">@color/yellow_bright</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/yellow2</item>
-        <item name="colorSecondaryVariant">@color/yellow2</item>
+        <item name="colorSecondary">@color/yellow_bright</item>
+        <item name="colorSecondaryVariant">@color/yellow_bright</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
@@ -28,4 +28,9 @@
     <style name="collapsingToolbarLayoutTitleColor" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/black0</item>
     </style>
+
+    <!--<style name="ThemeOverlay.DuarRiderApp.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
+        <item name="fullscreenTextColor">@color/light_blue_A400</item>
+    </style>-->
 </resources>

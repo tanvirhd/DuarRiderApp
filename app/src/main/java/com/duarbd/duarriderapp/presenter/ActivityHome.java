@@ -26,10 +26,14 @@ import com.duarbd.duarriderapp.interfaces.AdapterAssignedRideCallbacks;
 import com.duarbd.duarriderapp.model.ModelDeliveryRequest;
 import com.duarbd.duarriderapp.model.ModelResponse;
 import com.duarbd.duarriderapp.model.ModelRider;
+import com.duarbd.duarriderapp.model.ModelTokenFCM;
 import com.duarbd.duarriderapp.network.viewmodel.ViewModelRiderApp;
 import com.duarbd.duarriderapp.tools.KEYS;
 import com.duarbd.duarriderapp.tools.Utils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +54,9 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
         binding=ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        initNavDrawer();
         init();
+        initNavDrawer();
+        updateFCMToken();
 
         binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -78,6 +83,7 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
     }
 
     void initHeader(){
+        setSupportActionBar(binding.toolbar);
         View header =  binding.homeNav.getHeaderView(0);
         TextView riderName = header.findViewById(R.id.tvHeaderRiderName);
         TextView tvHeaderInitial=header.findViewById(R.id.tvHeaderInitial);
@@ -225,5 +231,31 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
         Log.d(TAG, "onAssignedRideClicked: check1 DC="+delivery.getDeliveryCharge());
         startActivity(new Intent(ActivityHome.this,ActivityDeliveryDetails.class)
           .putExtra(getResources().getString(R.string.parcel),delivery));
+    }
+
+    private  void updateFCMToken(){
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                ModelTokenFCM tokenFCM=new ModelTokenFCM(Utils.getPref(KEYS.RIDER_ID,""),"rider",s);
+                viewModelRiderApp.updateTokenFCM(tokenFCM).observe(ActivityHome.this,
+                        new Observer<ModelResponse>() {
+                            @Override
+                            public void onChanged(ModelResponse modelResponse) {
+                                if(modelResponse!=null&&modelResponse.getResponse()==1){
+                                    Toast.makeText(ActivityHome.this, "Token Updated", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(ActivityHome.this, "Token update failed!!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Token update failed");
+            }
+        });
+
     }
 }

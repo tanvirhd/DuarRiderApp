@@ -8,6 +8,9 @@ public class ModelResponse {
     @SerializedName("response")
     @Expose
     private Integer response;
+    @SerializedName("clientnumber")
+    @Expose
+    private String clientContactNumber;
     @SerializedName("status")
     @Expose
     private String status;
@@ -26,5 +29,13 @@ public class ModelResponse {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getClientContactNumber() {
+        return clientContactNumber;
+    }
+
+    public void setClientContactNumber(String clientContactNumber) {
+        this.clientContactNumber = clientContactNumber;
     }
 }

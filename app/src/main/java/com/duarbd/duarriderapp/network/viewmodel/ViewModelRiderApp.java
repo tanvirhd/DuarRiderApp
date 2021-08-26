@@ -12,6 +12,7 @@ import com.duarbd.duarriderapp.model.ModelResponse;
 import com.duarbd.duarriderapp.model.ModelResponseRider;
 import com.duarbd.duarriderapp.model.ModelRider;
 import com.duarbd.duarriderapp.model.ModelRiderSalary;
+import com.duarbd.duarriderapp.model.ModelTokenFCM;
 import com.duarbd.duarriderapp.network.repository.Repository;
 
 import java.util.List;
@@ -51,5 +52,11 @@ public class ViewModelRiderApp extends AndroidViewModel {
     }
     public LiveData<ModelRider> getRiderInformation(ModelRider rider){
         return repository.getRiderInformation(rider);
+    }
+    public LiveData<ModelResponse> updateTokenFCM(ModelTokenFCM token){
+        return repository.updateTokenFCM(token);
+    }
+    public LiveData<ModelResponse> getClientContactNumber(ModelDeliveryRequest deliveryRequest){
+        return repository.getClientContactNumber(deliveryRequest);
     }
 }

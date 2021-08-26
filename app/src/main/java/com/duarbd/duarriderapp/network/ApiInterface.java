@@ -5,6 +5,7 @@ import com.duarbd.duarriderapp.model.ModelResponse;
 import com.duarbd.duarriderapp.model.ModelResponseRider;
 import com.duarbd.duarriderapp.model.ModelRider;
 import com.duarbd.duarriderapp.model.ModelRiderSalary;
+import com.duarbd.duarriderapp.model.ModelTokenFCM;
 
 
 import java.util.List;
@@ -27,9 +28,6 @@ public interface ApiInterface {
     @POST("getDeliveryHistoryByRiderid.php")//ready
     Observable<List<ModelDeliveryRequest>> getDeliveryHistoryByRiderId(@Body ModelRider rider);
 
-    @POST("collectRiderPayment.php")
-    void m1();
-
     @POST("getRiderPayment.php")
     Observable<ModelRiderSalary> getRiderSalary(@Body ModelRider rider);
 
@@ -41,4 +39,10 @@ public interface ApiInterface {
 
     @POST("getRiderInformationById.php")
     Observable<ModelRider> getRiderInformation(@Body ModelRider rider);
+
+    @POST("storeFCMToken.php")
+    Observable<ModelResponse> updateTokenFCM(@Body ModelTokenFCM token);
+
+    @POST("getClientNumber.php")
+    Observable<ModelResponse> getClientContactNumber(@Body ModelDeliveryRequest deliveryRequest);
 }

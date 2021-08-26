@@ -2,14 +2,13 @@ package com.duarbd.duarriderapp.adapter;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.duarbd.duarriderapp.R;
@@ -44,62 +43,56 @@ public class AdapterAssignedRide extends RecyclerView.Adapter<AdapterAssignedRid
     public void onBindViewHolder(@NonNull ViewHolderAdapterAssignedRide holder, int position) {
         ModelDeliveryRequest assignedRide=assignedRideList.get(position);
 
-        holder.tvAS_pickupTime.setText("Pickup Time"+"\n"+
-        Utils.addMinute(Utils.getTimeFromDeliveryRequestPlacedDate(assignedRide.getRequestPlacedTime()),assignedRide.getPickupTime()));
+        holder.tvAS_pickupTime.setText(Utils.addMinute(Utils.getTimeFromDeliveryRequestPlacedDate(assignedRide.getRequestPlacedTime()),assignedRide.getPickupTime()));
+        holder.tvAs_ClientName.setText(assignedRide.getClientName());
+        holder.tvAS_productType.setText(assignedRide.getProductType());
+        holder.tvAS_pickupFrom.setText(assignedRide.getPickUpAddress());
 
-        holder.tvAS_pickupFrom.setText("PICKUP FROM:"+"\n"+assignedRide.getPickUpAddress());
-        holder.tvAS_deliverTo.setText("DELIVER TO:"+"\n"+assignedRide.getDeliveryArea());
+        if(assignedRide.getDeliveryAddressExtra().isEmpty()){
+            holder.tvAS_deliverTo.setText(assignedRide.getDeliveryArea());
+        }else {
+            holder.tvAS_deliverTo.setText(assignedRide.getDeliveryArea()+"\n"+assignedRide.getDeliveryAddressExtra());
+        }
+
 
         switch (assignedRide.getDeliveryStatus()){
             case 2:
-                holder.onMyWayToPickup.setVisibility(View.VISIBLE);
+                //holder.onMyWayToPickup.setVisibility(View.VISIBLE);
                 holder.tvAS_status.setText("Assigned");
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
+                /*if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
                     holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_red_fill,null));
-                else holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_red_fill));
+                else holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_red_fill));*/
 
-                holder.onMyWayToPickup.setVisibility(View.VISIBLE);
-                holder.onMyWayToDelivery.setVisibility(View.GONE);
+                //holder.onMyWayToPickup.setVisibility(View.VISIBLE);
+                //holder.onMyWayToDelivery.setVisibility(View.GONE);
                 break;
             case 3:
-                holder.onMyWayToPickup.setVisibility(View.GONE);
-                holder.onMyWayToDelivery.setVisibility(View.GONE);
+                //holder.onMyWayToPickup.setVisibility(View.GONE);
+                //holder.onMyWayToDelivery.setVisibility(View.GONE);
 
                 holder.tvAS_status.setText("Picking up");
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-                    holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_green,null));
-                else holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_green));
                 break;
             case 4:
                 holder.tvAS_status.setText("Received");
-                holder.onMyWayToPickup.setVisibility(View.GONE);
-                holder.onMyWayToDelivery.setVisibility(View.VISIBLE);
+                //holder.onMyWayToPickup.setVisibility(View.GONE);
+                //holder.onMyWayToDelivery.setVisibility(View.VISIBLE);
                 holder.tvAS_pickupTime.setVisibility(View.GONE);
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-                    holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_green,null));
-                else holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_green));
                 break;
             case 5:
-                holder.onMyWayToPickup.setVisibility(View.GONE);
+                //holder.onMyWayToPickup.setVisibility(View.GONE);
                 holder.tvAS_status.setText("On my way to delivery");
-                holder.onMyWayToPickup.setVisibility(View.GONE);
-                holder.onMyWayToDelivery.setVisibility(View.GONE);
+                //holder.onMyWayToPickup.setVisibility(View.GONE);
+                //holder.onMyWayToDelivery.setVisibility(View.GONE);
                 holder.tvAS_pickupTime.setVisibility(View.GONE);
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-                    holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_green,null));
-                else holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_green));
                 break;
             case 6:
-                holder.onMyWayToPickup.setVisibility(View.GONE);
+                //holder.onMyWayToPickup.setVisibility(View.GONE);
                 holder.tvAS_pickupTime.setVisibility(View.GONE);
                 holder.tvAS_status.setText("Delivered");
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-                    holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_green,null));
-                else holder.tvAS_status.setBackground(context.getResources().getDrawable(R.drawable.bg_cr8_green));
                 break;
         }
 
-        holder.onMyWayToPickup.setOnClickListener(new View.OnClickListener() {
+        /*holder.onMyWayToPickup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callbacks.onMyWayToPickUpClicked(assignedRideList.get(position));
@@ -110,9 +103,9 @@ public class AdapterAssignedRide extends RecyclerView.Adapter<AdapterAssignedRid
             public void onClick(View v) {
                 callbacks.onMyWayToDeliveryClicked(assignedRideList.get(position));
             }
-        });
+        });*/
 
-        holder.conatiner.setOnClickListener(new View.OnClickListener() {
+        holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callbacks.onAssignedRideClicked(assignedRide);
@@ -128,8 +121,8 @@ public class AdapterAssignedRide extends RecyclerView.Adapter<AdapterAssignedRid
     }
 
     class ViewHolderAdapterAssignedRide extends RecyclerView.ViewHolder{
-        TextView tvAS_status,tvAS_pickupTime,tvAS_pickupFrom,tvAS_deliverTo,onMyWayToPickup,onMyWayToDelivery;
-        ConstraintLayout conatiner;
+        TextView tvAS_status,tvAS_pickupTime,tvAS_pickupFrom,tvAS_deliverTo,tvAs_ClientName,tvAS_productType;
+        CardView container;
 
         public ViewHolderAdapterAssignedRide(@NonNull View itemView) {
             super(itemView);
@@ -137,9 +130,11 @@ public class AdapterAssignedRide extends RecyclerView.Adapter<AdapterAssignedRid
             tvAS_pickupTime=itemView.findViewById(R.id.tvAS_pickupTime);
             tvAS_pickupFrom=itemView.findViewById(R.id.tvAS_pickupFrom);
             tvAS_deliverTo=itemView.findViewById(R.id.tvAS_deliverTo);
-            onMyWayToPickup=itemView.findViewById(R.id.onMyWayToPickup);
-            onMyWayToDelivery=itemView.findViewById(R.id.onMyWayToDelivery);
-            conatiner=itemView.findViewById(R.id.as_Container);
+            container =itemView.findViewById(R.id.as_Container);
+            tvAs_ClientName=itemView.findViewById(R.id.tvAS_clientName);
+            tvAS_productType=itemView.findViewById(R.id.tvAS_productType);
+            //onMyWayToPickup=itemView.findViewById(R.id.onMyWayToPickup);
+            //onMyWayToDelivery=itemView.findViewById(R.id.onMyWayToDelivery);
         }
     }
 }
