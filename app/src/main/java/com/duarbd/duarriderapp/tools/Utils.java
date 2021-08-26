@@ -6,11 +6,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
 import android.view.Window;
 
 import com.duarbd.duarriderapp.R;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -76,18 +84,27 @@ public class Utils {
     }
 
     public static String addMinute(String time,int pickupWithin){
+        DecimalFormat twodigits = new DecimalFormat("00");
         String ampm="";
         String[] separatedTime=time.split(":");
         int hour=Integer.valueOf(separatedTime[0]);
         int min=Integer.valueOf(separatedTime[1]);
 
         min=min+pickupWithin;
-        if(min>60){
+        if(min>=60){
             hour=hour+1;
             min=min-60;
         }
 
-        return hour+":"+min;
+        //todo 00:00 time exception not checked
+        if(hour<12){
+            return hour+":"+twodigits.format(min)+" am";
+        }else if(hour==12){
+            return hour+":"+twodigits.format(min)+" pm";
+        }else {
+            hour=hour-12;
+            return hour+":"+twodigits.format(min)+" pm";
+        }
     }
 
     public static String[] getCustentDateArray(){
@@ -96,6 +113,46 @@ public class Utils {
         String date=dateFormatDate.format(calendar.getTime());
         String[] seperated=date.split("-");
         return seperated;
+    }
+
+    public static boolean isNetworkAvailable(Context activity) {
+
+        ConnectivityManager connectivity = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            Network[] networks = connectivity.getAllNetworks();
+            NetworkInfo networkInfo;
+
+            for (Network mNetwork : networks) {
+
+                networkInfo = connectivity.getNetworkInfo(mNetwork);
+
+                if (networkInfo.getState().equals(NetworkInfo.State.CONNECTED)) {
+                    return true;
+                }
+            }
+
+        } else {
+            if (connectivity != null) {
+
+                NetworkInfo[] info = connectivity.getAllNetworkInfo();
+
+                if (info != null) {
+                    for (int i = 0; i < info.length; i++) {
+                        if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static Uri getDefaultRingtoneUri() {
+        return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
     }
 
 }

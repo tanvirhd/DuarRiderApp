@@ -17,6 +17,7 @@ import com.duarbd.duarriderapp.databinding.ActivityDeliveryDetailsBinding;
 import com.duarbd.duarriderapp.model.ModelDeliveryRequest;
 import com.duarbd.duarriderapp.model.ModelResponse;
 import com.duarbd.duarriderapp.network.viewmodel.ViewModelRiderApp;
+import com.duarbd.duarriderapp.tools.KEYS;
 import com.duarbd.duarriderapp.tools.Utils;
 
 public class ActivityDeliveryDetails extends AppCompatActivity {
@@ -25,8 +26,9 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
     private ModelDeliveryRequest deliveryDetails;
     private ViewModelRiderApp viewModelRiderApp;
     private Dialog dialogLoading;
+    private String clientContactNumber;
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityDeliveryDetailsBinding.inflate(getLayoutInflater());
@@ -45,16 +47,17 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deliveryDetails.setDeliveryStatus(6);
-                Log.d(TAG, "onClick: check2 DC="+deliveryDetails.getDeliveryCharge());
+                deliveryDetails.setRiderid(Utils.getPref(KEYS.RIDER_ID,""));
                 viewModelRiderApp.updateDeliveryStatusByRequestId(deliveryDetails).observe(ActivityDeliveryDetails.this,
                         new Observer<ModelResponse>() {
                             @Override
                             public void onChanged(ModelResponse modelResponse) {
                                 if(modelResponse!=null&&modelResponse.getResponse()==1){
-                                    Toast.makeText(ActivityDeliveryDetails.this, "Ride Complete.Status: "+modelResponse.getStatus(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(ActivityDeliveryDetails.this, "Ride Complete.", Toast.LENGTH_LONG).show();
                                     onBackPressed();
                                 }else{
                                     dialogLoading.dismiss();
+                                    //Log.d(TAG, "onChanged: response status="+modelResponse.getStatus());
                                     Toast.makeText(ActivityDeliveryDetails.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -74,6 +77,17 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
             }
         });
 
+        binding.tvCallClient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(clientContactNumber!=null){
+                    makeCall(clientContactNumber);
+                }else {
+                    Toast.makeText(ActivityDeliveryDetails.this, "Please wait. Getting client number", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         dialogLoading= Utils.setupLoadingDialog(ActivityDeliveryDetails.this);
         viewModelRiderApp=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(ViewModelRiderApp.class);
 
@@ -82,7 +96,8 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
     }
 
     void  updateUI(ModelDeliveryRequest deliveryDetails){
-        Log.d(TAG, "updateUI: "+deliveryDetails.getPickupCode());
+        Log.d(TAG, "updateUI: client id"+deliveryDetails.getClientID());
+
 
         binding.tvDeliveryId.setText("Delivery id: "+deliveryDetails.getDeliveryRequestId());
         binding.tvDeliveyOf.setText(deliveryDetails.getClientName());
@@ -93,6 +108,13 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 makeCall(deliveryDetails.getCustomerNumber());
+            }
+        });
+
+        binding.tvCallClient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeCall(deliveryDetails.getClientID());
             }
         });
 
@@ -169,4 +191,21 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
             Toast.makeText(this, "Wrong Code", Toast.LENGTH_SHORT).show();
         }
     }
+
+    void getClientContactNumber(ModelDeliveryRequest deliveryRequest){
+      dialogLoading.show();
+      viewModelRiderApp.getClientContactNumber(deliveryRequest).observe(ActivityDeliveryDetails.this,
+              new Observer<ModelResponse>() {
+                  @Override
+                  public void onChanged(ModelResponse modelResponse) {
+                      if(modelResponse!=null&&modelResponse.getResponse()==1){
+                          clientContactNumber=modelResponse.getClientContactNumber();
+                          dialogLoading.dismiss();
+                      }else {
+                          Toast.makeText(ActivityDeliveryDetails.this, "Something went Wrong", Toast.LENGTH_SHORT).show();
+                          dialogLoading.dismiss();
+                      }
+                  }
+              });
+    }*/
 }

@@ -11,6 +11,7 @@ import com.duarbd.duarriderapp.model.ModelResponse;
 import com.duarbd.duarriderapp.model.ModelResponseRider;
 import com.duarbd.duarriderapp.model.ModelRider;
 import com.duarbd.duarriderapp.model.ModelRiderSalary;
+import com.duarbd.duarriderapp.model.ModelTokenFCM;
 import com.duarbd.duarriderapp.network.ApiClient;
 import com.duarbd.duarriderapp.network.ApiInterface;
 
@@ -172,4 +173,41 @@ public class Repository {
                 });
         return result;
     }
+
+    public LiveData<ModelResponse> updateTokenFCM(ModelTokenFCM token){
+        MutableLiveData<ModelResponse> result=new MutableLiveData<>();
+        apiRequest.updateTokenFCM(token).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ModelResponse>() {
+                    @Override
+                    public void accept(ModelResponse modelResponse) throws Exception {
+                        result.postValue(modelResponse);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "updateTokenFCM: error:"+throwable.getMessage());
+                    }
+                });
+        return result;
+    }
+
+    public LiveData<ModelResponse> getClientContactNumber(ModelDeliveryRequest deliveryRequest){
+        MutableLiveData<ModelResponse> result=new MutableLiveData<>();
+        apiRequest.getClientContactNumber(deliveryRequest).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ModelResponse>() {
+                    @Override
+                    public void accept(ModelResponse modelResponse) throws Exception {
+                        result.postValue(modelResponse);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "getClientContactNumber: error:"+throwable.getMessage());
+                    }
+                });
+        return  result;
+    }
+
 }

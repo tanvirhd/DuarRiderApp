@@ -138,6 +138,8 @@ public class ModelDeliveryRequest implements Parcelable {
         this.clientPaymentStatus="due";
     }
 
+
+
     public String getDeliveryRequestId() {
         return deliveryRequestId;
     }

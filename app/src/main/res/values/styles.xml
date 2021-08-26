@@ -1,0 +1,31 @@
+<resources>
+
+    <style name="Widget.Theme.DuarRiderApp.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Widget.Theme.DuarRiderApp.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+
+    <!--ssc=sans-serif-condensed-light-->
+    <style name="text_style_color808080_family_ssc_lite" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="fontFamily">sans-serif-condensed-light</item>
+        <item name="color">@color/Color808080</item>
+    </style>
+
+    <!--ssc=sans-serif-condensed-->
+    <style name="text_style_color808080_family_ssc" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="fontFamily">sans-serif-condensed</item>
+        <item name="color">@color/Color808080</item>
+    </style>
+
+    <!--ssc=sans-serif-condensed-->
+    <style name="text_style_color_black_family_ssc" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="fontFamily">sans-serif-condensed</item>
+        <item name="color">@color/black0</item>
+    </style>
+
+
+</resources>

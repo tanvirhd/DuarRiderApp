@@ -3,6 +3,11 @@
     package="com.duarbd.duarriderapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name=".tools.App"
@@ -13,7 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuarRiderApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".presenter.ActivityProfile"></activity>
+        <!--<activity
+            android:name=".presenter.ActivityNewRideAlart"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_new_ride_alart"
+            android:theme="@style/Theme.DuarRiderApp.Fullscreen"></activity>-->
+        <activity android:name=".presenter.ActivityProfile" />
         <activity android:name=".presenter.ActivityDailyClearance" />
         <activity android:name=".presenter.ActivityDeliveryHistory" />
         <activity
@@ -30,11 +40,18 @@
         </activity>
         <activity android:name=".presenter.ActivityHome" />
 
-        <service android:name=".services.CustomFirebaseMessagingService">
+        <service
+            android:name=".services.CustomFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="duar_rider_channel_id" />
+
     </application>
 
 </manifest>

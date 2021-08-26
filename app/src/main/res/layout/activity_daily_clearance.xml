@@ -30,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:mti_bgLblTodayColor="@color/red"
-            app:mti_primaryColor="@color/yellow2"
+            app:mti_primaryColor="@color/yellow_bright"
             app:mti_primaryDarkColor="@color/lite_black"
             app:mti_tabBeforeSelectionColor="@color/lite_black"
             app:mti_tabSelectedColor="@color/black" />
