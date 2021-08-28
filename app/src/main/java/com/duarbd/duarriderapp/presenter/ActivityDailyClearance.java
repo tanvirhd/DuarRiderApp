@@ -108,8 +108,9 @@ public class ActivityDailyClearance extends AppCompatActivity implements Adapter
                             }else{
                                 deliveryHistory.clear();dailyClearanceAmount=0;
                                 for(ModelDeliveryRequest delivery:modelDeliveryRequests){
-                                    String palceddate[]=delivery.getRequestPlacedAt().split(" ");
-                                    if(date.equals(palceddate[0])){
+                                    Log.d(TAG, "onChanged: "+delivery.getRequestPlacedAt());
+                                    String palcedDate[]=delivery.getRequestPlacedAt().split(" ");
+                                    if(date.equals(palcedDate[0])){
                                         deliveryHistory.add(delivery);
                                         if(delivery.getRiderClearance().equals("due"))dailyClearanceAmount=dailyClearanceAmount+delivery.getProductPrice()+delivery.getDeliveryCharge();
                                     }

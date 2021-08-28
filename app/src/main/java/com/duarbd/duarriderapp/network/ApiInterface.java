@@ -19,14 +19,19 @@ public interface ApiInterface {
     @POST("api/v1/riderLogin.php")
     Observable<ModelResponseRider> riderLogin(@Body  ModelRider rider);
 
+    @POST("api/v1/updateRiderPassword.php")
+    Observable<ModelResponse> updateRiderPassword(@Body ModelRider rider);
+
     @POST("api/v2/getAssignedRideByRiderId.php")
     Observable<List<ModelDeliveryRequest>> getAssignedRide(@Body ModelRider rider);
 
     @POST("api/v2/updateAssignedRideStatusById.php")
     Observable<ModelResponse> updateDeliveryStatusByRequestId(@Body  ModelDeliveryRequest request);
 
-    @POST("getDeliveryHistoryByRiderid.php")//ready
+    @POST("api/v2/getDeliveryHistoryByRiderId.php")//ready
     Observable<List<ModelDeliveryRequest>> getDeliveryHistoryByRiderId(@Body ModelRider rider);
+
+
 
     @POST("getRiderPayment.php")
     Observable<ModelRiderSalary> getRiderSalary(@Body ModelRider rider);
@@ -34,15 +39,14 @@ public interface ApiInterface {
     @POST("collectRiderPayment.php")
     Observable<ModelResponse> collectRiderSalary(@Body ModelRider rider);
 
-    @POST("updateRiderPassword.php")
-    Observable<ModelResponse> updateRiderPassword(@Body ModelRider rider);
-
     @POST("getRiderInformationById.php")
     Observable<ModelRider> getRiderInformation(@Body ModelRider rider);
 
     @POST("storeFCMToken.php")
     Observable<ModelResponse> updateTokenFCM(@Body ModelTokenFCM token);
 
+
+    //todo delete this api from server
     @POST("getClientNumber.php")
     Observable<ModelResponse> getClientContactNumber(@Body ModelDeliveryRequest deliveryRequest);
 }

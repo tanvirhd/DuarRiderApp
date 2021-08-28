@@ -9,8 +9,9 @@
     <item android:title="Daily Clearance"
         android:id="@+id/dailyClearance"/>
 
-    <item android:title="My Wallet"
-        android:id="@+id/myWallet" />
+    <!--todo note: myWallet is off temporary-->
+    <!--<item android:title="My Wallet"
+        android:id="@+id/myWallet" />-->
 
     <item android:title="Log-out"
         android:id="@+id/logout" />

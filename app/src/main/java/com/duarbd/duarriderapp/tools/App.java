@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.media.AudioAttributes;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -17,7 +18,7 @@ public class App extends Application {
     private static final String TAG = "App";
     private static App instance;
     public static final String CHANNEL_ID ="duar_rider_channel_id";
-    public static final String CHANNEL_NAME="duar_client_channel";
+    public static final String CHANNEL_NAME="duar_rider_channel_id";
 
     public static App getInstance() {
         return instance;
@@ -38,7 +39,7 @@ public class App extends Application {
                 .build();
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             NotificationChannel channel=new NotificationChannel(CHANNEL_ID,CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
-            channel.setSound(resourceToUri(R.raw.alarmtone1),attributes);
+            channel.setSound(resourceToUri(R.raw.alarmtone1),attributes/*RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),attributes*/);
             NotificationManager notificationManager=getContext().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }

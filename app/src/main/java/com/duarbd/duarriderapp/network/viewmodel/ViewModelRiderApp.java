@@ -56,7 +56,5 @@ public class ViewModelRiderApp extends AndroidViewModel {
     public LiveData<ModelResponse> updateTokenFCM(ModelTokenFCM token){
         return repository.updateTokenFCM(token);
     }
-    public LiveData<ModelResponse> getClientContactNumber(ModelDeliveryRequest deliveryRequest){
-        return repository.getClientContactNumber(deliveryRequest);
-    }
+
 }

@@ -178,9 +178,10 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
             case R.id.dailyClearance:
                 startActivity(new Intent(ActivityHome.this,ActivityDailyClearance.class));;
                 break;
-            case R.id.myWallet:
+            //todo note: myWallet is off temporary
+            /*case R.id.myWallet:
                 startActivity(new Intent(ActivityHome.this,ActivityMyWallet.class));
-                break;
+                break;*/
             case R.id.logout:
                 Utils.savePrefBoolean(KEYS.IS_LOGGED_IN,false);
                 startActivity(new Intent(ActivityHome.this,ActivityLogin.class));
@@ -193,7 +194,6 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
 
     @Override
     public void onAssignedRideClicked(ModelDeliveryRequest delivery) {
-        Log.d(TAG, "onAssignedRideClicked: check1 DC="+delivery.getDeliveryCharge());
         startActivity(new Intent(ActivityHome.this,ActivityDeliveryDetails.class)
           .putExtra(getResources().getString(R.string.parcel),delivery));
     }
