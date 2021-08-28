@@ -115,6 +115,24 @@ public class Utils {
         return seperated;
     }
 
+    public static String convertTimeTo12HrFormat(String time){ //arg example 13:30
+        DecimalFormat twodigits = new DecimalFormat("00");
+        String ampm="";
+        String[] separatedTime=time.split(":");
+        int hour=Integer.valueOf(separatedTime[0]);
+        int min=Integer.valueOf(separatedTime[1]);
+
+        //todo 00:00 time exception not checked
+        if(hour<12){
+            return hour+":"+twodigits.format(min)+" am";
+        }else if(hour==12){
+            return hour+":"+twodigits.format(min)+" pm";
+        }else {
+            hour=hour-12;
+            return hour+":"+twodigits.format(min)+" pm";
+        }
+    }
+
     public static boolean isNetworkAvailable(Context activity) {
 
         ConnectivityManager connectivity = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -155,4 +173,10 @@ public class Utils {
         return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
     }
 
+    public static String getCurrentDateTime24HRFormat(){
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormatDate = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormatTime = new SimpleDateFormat("HH:mm");
+        return dateFormatDate.format(calendar.getTime())+" "+dateFormatTime.format(calendar.getTime());
+    }
 }

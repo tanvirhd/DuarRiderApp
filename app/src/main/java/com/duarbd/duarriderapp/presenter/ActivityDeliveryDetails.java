@@ -26,9 +26,8 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
     private ModelDeliveryRequest deliveryDetails;
     private ViewModelRiderApp viewModelRiderApp;
     private Dialog dialogLoading;
-    private String clientContactNumber;
 
-    /*@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityDeliveryDetailsBinding.inflate(getLayoutInflater());
@@ -36,25 +35,59 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
 
         init();
 
-        binding.btnVerifyPickUpCode.setOnClickListener(new View.OnClickListener() {
+        binding.tvRDConfirmPickupCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifyPickupCode(binding.etPickupCode.getText().toString());
+                verifyPickupCode(binding.etRDPickupCode.getText().toString());
             }
         });
 
-        binding.btnFinishRide.setOnClickListener(new View.OnClickListener() {
+        binding.ivRDCallClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deliveryDetails.setDeliveryStatus(6);
-                deliveryDetails.setRiderid(Utils.getPref(KEYS.RIDER_ID,""));
+                if(deliveryDetails!=null){
+                    makeCall(deliveryDetails.getClientID());
+                }else {
+                    Toast.makeText(ActivityDeliveryDetails.this, "Please wait. Getting client number", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        binding.ivRdCallCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(deliveryDetails!=null){
+                    makeCall(deliveryDetails.getCustomerNumber());
+                }else {
+                    Toast.makeText(ActivityDeliveryDetails.this, "Please wait. Getting customer number", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        binding.btnUpdateDeliveryStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogLoading.show();
+
+                switch (binding.btnUpdateDeliveryStatus.getText().toString()){
+                    case "On my way to pickup":
+                        deliveryDetails.setDeliveryStatus(3);
+                        break;
+                    case "On my way to delivery":
+                        deliveryDetails.setDeliveryStatus(5);
+                        break;
+                    case "Finish Ride":
+                        deliveryDetails.setDeliveryStatus(6);
+                        deliveryDetails.setDeliveredAt(Utils.getCurrentDateTime24HRFormat());
+                        break;
+                }
                 viewModelRiderApp.updateDeliveryStatusByRequestId(deliveryDetails).observe(ActivityDeliveryDetails.this,
                         new Observer<ModelResponse>() {
                             @Override
                             public void onChanged(ModelResponse modelResponse) {
                                 if(modelResponse!=null&&modelResponse.getResponse()==1){
-                                    Toast.makeText(ActivityDeliveryDetails.this, "Ride Complete.", Toast.LENGTH_LONG).show();
-                                    onBackPressed();
+                                    dialogLoading.dismiss();
+                                    updateUI(deliveryDetails);
                                 }else{
                                     dialogLoading.dismiss();
                                     //Log.d(TAG, "onChanged: response status="+modelResponse.getStatus());
@@ -69,6 +102,7 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
     void  init(){
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Ride Details");
+
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,16 +111,6 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
             }
         });
 
-        binding.tvCallClient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(clientContactNumber!=null){
-                    makeCall(clientContactNumber);
-                }else {
-                    Toast.makeText(ActivityDeliveryDetails.this, "Please wait. Getting client number", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         dialogLoading= Utils.setupLoadingDialog(ActivityDeliveryDetails.this);
         viewModelRiderApp=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(ViewModelRiderApp.class);
@@ -96,74 +120,129 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
     }
 
     void  updateUI(ModelDeliveryRequest deliveryDetails){
-        Log.d(TAG, "updateUI: client id"+deliveryDetails.getClientID());
+        if(!dialogLoading.isShowing())dialogLoading.show();
 
+        if(deliveryDetails.isOnHold()==1){
+            binding.clientInformationBlock.setVisibility(View.GONE);
+            binding.paymentInformationBlock.setVisibility(View.GONE);
+            binding.pickupCodeBlock.setVisibility(View.GONE);
+            binding.btnUpdateDeliveryStatus.setVisibility(View.GONE);
+            binding.tvRDOnHold.setVisibility(View.VISIBLE);
+        }else {
+            binding.tvRDOnHold.setVisibility(View.GONE);
 
-        binding.tvDeliveryId.setText("Delivery id: "+deliveryDetails.getDeliveryRequestId());
-        binding.tvDeliveyOf.setText(deliveryDetails.getClientName());
+            switch (deliveryDetails.getDeliveryStatus()){
+                case 2:
+                    binding.tvRDDeliveryStatus.setText("Assigned");
+                    binding.clientInformationBlock.setVisibility(View.VISIBLE);
 
-        binding.tvCustomerName.setText("Customer Name: "+deliveryDetails.getCustomerName());
-        binding.tvCustomerNumber.setText("Customer Number: "+ deliveryDetails.getCustomerNumber());
-        binding.tvCallCustomer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                makeCall(deliveryDetails.getCustomerNumber());
+                    binding.customerInformationBlock.setVisibility(View.VISIBLE);
+                    binding.ivRdCallCustomer.setVisibility(View.GONE);
+
+                    binding.paymentInformationBlock.setVisibility(View.GONE);
+                    binding.pickupCodeBlock.setVisibility(View.GONE);
+
+                    binding.btnUpdateDeliveryStatus.setVisibility(View.VISIBLE);
+                    binding.btnUpdateDeliveryStatus.setText("On my way to pickup");
+
+                    binding.tvRDTimeStatusNote.setText("Pickup Time");
+                    binding.tvRDTimeStatus.setText(
+                       Utils.addMinute(
+                          Utils.getTimeFromDeliveryRequestPlacedDate(
+                            deliveryDetails.getRequestPlacedAt()),deliveryDetails.getPickupTime()
+                       )
+                    );
+                    break;
+                case 3:
+                    binding.tvRDDeliveryStatus.setText("On my way to pickup");
+                    binding.clientInformationBlock.setVisibility(View.VISIBLE);
+
+                    binding.customerInformationBlock.setVisibility(View.VISIBLE);
+                    binding.ivRdCallCustomer.setVisibility(View.GONE);
+
+                    binding.paymentInformationBlock.setVisibility(View.GONE);
+                    binding.pickupCodeBlock.setVisibility(View.VISIBLE);
+
+                    binding.btnUpdateDeliveryStatus.setVisibility(View.GONE);
+
+                    binding.tvRDTimeStatusNote.setText("Pickup Time");
+                    binding.tvRDTimeStatus.setText(
+                            Utils.addMinute(
+                                    Utils.getTimeFromDeliveryRequestPlacedDate(
+                                            deliveryDetails.getRequestPlacedAt()),deliveryDetails.getPickupTime()
+                            )
+                    );
+                    break;
+                case 4:
+                    binding.tvRDDeliveryStatus.setText("Received");
+                    binding.clientInformationBlock.setVisibility(View.VISIBLE);
+
+                    binding.customerInformationBlock.setVisibility(View.VISIBLE);
+                    binding.ivRdCallCustomer.setVisibility(View.VISIBLE);
+
+                    binding.paymentInformationBlock.setVisibility(View.VISIBLE);
+                    binding.pickupCodeBlock.setVisibility(View.GONE);
+
+                    binding.btnUpdateDeliveryStatus.setVisibility(View.VISIBLE);
+                    binding.btnUpdateDeliveryStatus.setText("On my way to delivery");
+
+                    binding.tvRDTimeStatusNote.setText("Picked-up At");
+                    binding.tvRDTimeStatus.setText(Utils.convertTimeTo12HrFormat(deliveryDetails.getPickedUpAt().split(" ")[1]));
+                    break;
+                case 5:
+                    binding.tvRDDeliveryStatus.setText("On my way to Delivery");
+                    binding.clientInformationBlock.setVisibility(View.VISIBLE);
+
+                    binding.customerInformationBlock.setVisibility(View.VISIBLE);
+                    binding.ivRdCallCustomer.setVisibility(View.VISIBLE);
+
+                    binding.paymentInformationBlock.setVisibility(View.VISIBLE);
+                    binding.pickupCodeBlock.setVisibility(View.GONE);
+
+                    binding.btnUpdateDeliveryStatus.setVisibility(View.VISIBLE);
+                    binding.btnUpdateDeliveryStatus.setText("Finish Ride");
+
+                    binding.tvRDTimeStatusNote.setText("Picked-up At");
+                    binding.tvRDTimeStatus.setText(Utils.convertTimeTo12HrFormat(deliveryDetails.getPickedUpAt().split(" ")[1]));
+                    break;
+                case 6:
+                    binding.tvRDDeliveryStatus.setText("Delivered");
+                    binding.clientInformationBlock.setVisibility(View.VISIBLE);
+
+                    binding.customerInformationBlock.setVisibility(View.VISIBLE);
+                    binding.ivRdCallCustomer.setVisibility(View.VISIBLE);
+
+                    binding.paymentInformationBlock.setVisibility(View.VISIBLE);
+                    binding.pickupCodeBlock.setVisibility(View.GONE);
+
+                    binding.btnUpdateDeliveryStatus.setVisibility(View.GONE);
+
+                    binding.tvRDTimeStatusNote.setText("Delivered At");
+                    binding.tvRDTimeStatus.setText(Utils.convertTimeTo12HrFormat(deliveryDetails.getDeliveredAt().split(" ")[1]));
+                    break;
             }
-        });
-
-        binding.tvCallClient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                makeCall(deliveryDetails.getClientID());
-            }
-        });
-
-        binding.tvProductType.setText("Product Type: "+deliveryDetails.getProductType());
-        binding.tvPIckupAddress.setText("Pickup address: "+deliveryDetails.getPickUpAddress());
-        binding.tvDeliveryArea.setText("Delivery address (Area): "+deliveryDetails.getDeliveryArea());
-        binding.tvDeliveryAddressNote.setText("Delivery address note:"+deliveryDetails.getDeliveryAddressExtra());
-
-        binding.tvCOD.setText("COD Amount:" +(deliveryDetails.getProductPrice()+deliveryDetails.getDeliveryCharge())+" taka");
-
-        switch (deliveryDetails.getDeliveryStatus()){
-            case 2:
-                binding.tvCallClient.setVisibility(View.VISIBLE);
-                binding.tvCallCustomer.setVisibility(View.GONE);
-                binding.tvCOD.setVisibility(View.GONE);
-                binding.groupClearance.setVisibility(View.GONE);
-                binding.btnFinishRide.setVisibility(View.GONE);
-                break;
-            case 3:
-                binding.tvCallClient.setVisibility(View.VISIBLE);
-                binding.tvCallCustomer.setVisibility(View.GONE);
-                binding.tvCOD.setVisibility(View.GONE);
-                binding.groupClearance.setVisibility(View.VISIBLE);
-                binding.btnFinishRide.setVisibility(View.GONE);
-                break;
-            case 4:
-                binding.tvCallClient.setVisibility(View.VISIBLE);
-                binding.tvCallCustomer.setVisibility(View.VISIBLE);
-                binding.tvCOD.setVisibility(View.VISIBLE);
-                binding.groupClearance.setVisibility(View.GONE);
-                binding.btnFinishRide.setVisibility(View.GONE);
-                break;
-            case 5:
-                binding.tvCallClient.setVisibility(View.VISIBLE);
-                binding.tvCallCustomer.setVisibility(View.VISIBLE);
-                binding.tvCOD.setVisibility(View.VISIBLE);
-                binding.groupClearance.setVisibility(View.GONE);
-                binding.btnFinishRide.setVisibility(View.VISIBLE);
-                break;
-            case 6:
-                binding.tvCallClient.setVisibility(View.VISIBLE);
-                binding.tvCallCustomer.setVisibility(View.VISIBLE);
-                binding.tvCOD.setVisibility(View.GONE);
-                binding.groupClearance.setVisibility(View.GONE);
-                binding.btnFinishRide.setVisibility(View.GONE);
-                break;
         }
 
+        //client info
+        binding.tvRDClientName.setText(deliveryDetails.getClientName());
+        binding.tvRDDeliveryId.setText("Request ID: "+deliveryDetails.getDeliveryRequestId());
+        binding.tvRDProductType.setText(deliveryDetails.getProductType());
+        binding.tvRDPickupAddress.setText(deliveryDetails.getPickUpAddress());
+
+        //customer info
+        binding.tvRDCustomerName.setText(deliveryDetails.getCustomerName());
+        binding.tvRDCustomerNumber.setText(deliveryDetails.getCustomerNumber());
+
+        if(deliveryDetails.getDeliveryAddressExtra().isEmpty())
+         binding.tvRDDelievryAddress.setText(deliveryDetails.getDeliveryArea());
+        else
+         binding.tvRDDelievryAddress.setText(deliveryDetails.getDeliveryArea()+"\n"+deliveryDetails.getDeliveryAddressExtra());
+
+        //payment info
+        binding.tvRDPayment.setText((deliveryDetails.getProductPrice()+deliveryDetails.getDeliveryCharge())+" Taka");
+        if(dialogLoading.isShowing())dialogLoading.dismiss();
     }
+
 
     void makeCall(String number){
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
@@ -171,15 +250,16 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
     }
 
     void verifyPickupCode(String code){
-        Log.d(TAG, "verifyPickupCode: code"+code);
+        dialogLoading.show();
         if(deliveryDetails.getPickupCode().equals(code)) {
             deliveryDetails.setDeliveryStatus(4);
+            deliveryDetails.setPickedUpAt(Utils.getCurrentDateTime24HRFormat());
             viewModelRiderApp.updateDeliveryStatusByRequestId(deliveryDetails).observe(this,
                     new Observer<ModelResponse>() {
                         @Override
                         public void onChanged(ModelResponse modelResponse) {
                             if(modelResponse!=null&&modelResponse.getResponse()==1){
-                                deliveryDetails.setDeliveryStatus(4);
+                                dialogLoading.dismiss();
                                 updateUI(deliveryDetails);
                             }else{
                                 dialogLoading.dismiss();
@@ -188,24 +268,9 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
                         }
                     });
         }else {
+            dialogLoading.dismiss();
             Toast.makeText(this, "Wrong Code", Toast.LENGTH_SHORT).show();
         }
     }
 
-    void getClientContactNumber(ModelDeliveryRequest deliveryRequest){
-      dialogLoading.show();
-      viewModelRiderApp.getClientContactNumber(deliveryRequest).observe(ActivityDeliveryDetails.this,
-              new Observer<ModelResponse>() {
-                  @Override
-                  public void onChanged(ModelResponse modelResponse) {
-                      if(modelResponse!=null&&modelResponse.getResponse()==1){
-                          clientContactNumber=modelResponse.getClientContactNumber();
-                          dialogLoading.dismiss();
-                      }else {
-                          Toast.makeText(ActivityDeliveryDetails.this, "Something went Wrong", Toast.LENGTH_SHORT).show();
-                          dialogLoading.dismiss();
-                      }
-                  }
-              });
-    }*/
 }

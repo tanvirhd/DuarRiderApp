@@ -16,13 +16,13 @@ import retrofit2.http.POST;
 
 public interface ApiInterface {
 
-    @POST("riderLogin.php")
+    @POST("api/v1/riderLogin.php")
     Observable<ModelResponseRider> riderLogin(@Body  ModelRider rider);
 
-    @POST("getAssignedRideByRiderId.php")
+    @POST("api/v2/getAssignedRideByRiderId.php")
     Observable<List<ModelDeliveryRequest>> getAssignedRide(@Body ModelRider rider);
 
-    @POST("updateAssignedRideStatusById.php")
+    @POST("api/v2/updateAssignedRideStatusById.php")
     Observable<ModelResponse> updateDeliveryStatusByRequestId(@Body  ModelDeliveryRequest request);
 
     @POST("getDeliveryHistoryByRiderid.php")//ready

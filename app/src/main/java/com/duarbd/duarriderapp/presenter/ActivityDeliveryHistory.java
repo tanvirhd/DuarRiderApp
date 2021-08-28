@@ -107,7 +107,7 @@ public class ActivityDeliveryHistory extends AppCompatActivity implements Adapte
 
                                 deliveryHistory.clear();
                                 for(ModelDeliveryRequest delivery:modelDeliveryRequests){
-                                    String palceddate[]=delivery.getRequestPlacedTime().split(" ");
+                                    String palceddate[]=delivery.getRequestPlacedAt().split(" ");
                                     if(date.equals(palceddate[0])){
                                         deliveryHistory.add(delivery);
                                     }

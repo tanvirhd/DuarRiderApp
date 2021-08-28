@@ -16,6 +16,7 @@ public class ModelDeliveryRequest implements Parcelable {
     private String clientID;
 
     @SerializedName("clientName")
+    @Expose
     private String clientName;
 
     @SerializedName("customerName")
@@ -65,13 +66,27 @@ public class ModelDeliveryRequest implements Parcelable {
     @SerializedName("pickupTime")
     @Expose
     private int pickupTime;//in minute
-    @SerializedName("requestPlacedTime")
+
+    @SerializedName("pickedupAt")
     @Expose
-    private String requestPlacedTime;
+    private String pickedUpAt;
+
+    @SerializedName("deliveredAt")
+    @Expose
+    private String deliveredAt;
+
+    @SerializedName("requestPlacedAt")
+    @Expose
+    private String requestPlacedAt;
 
     @SerializedName("deliveryStatus")
     @Expose
     private int deliveryStatus;
+
+    @SerializedName("isOnHold")
+    @Expose
+    private int isOnHold;
+
     @SerializedName("riderName")
     @Expose
     private String riderName;
@@ -131,218 +146,13 @@ public class ModelDeliveryRequest implements Parcelable {
         this.deliveryCharge = deliveryCharge;
         this.productPrice = productPrice;
         this.pickupTime = pickupTime;
-        this.requestPlacedTime = requestPlacedTime;
+        this.requestPlacedAt = requestPlacedTime;
 
         this.deliveryStatus=0;
         this.riderName="";
         this.clientPaymentStatus="due";
     }
 
-
-
-    public String getDeliveryRequestId() {
-        return deliveryRequestId;
-    }
-
-    public void setDeliveryRequestId(String deliveryRequestId) {
-        this.deliveryRequestId = deliveryRequestId;
-    }
-
-    public String getClientID() {
-        return clientID;
-    }
-
-    public void setClientID(String clientID) {
-        this.clientID = clientID;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getCustomerNumber() {
-        return customerNumber;
-    }
-
-    public void setCustomerNumber(String customerNumber) {
-        this.customerNumber = customerNumber;
-    }
-
-    public String getProductType() {
-        return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
-    }
-
-    public String getDeliveryArea() {
-        return deliveryArea;
-    }
-
-    public void setDeliveryArea(String deliveryArea) {
-        this.deliveryArea = deliveryArea;
-    }
-
-    public String getDeliveryAddressExtra() {
-        return deliveryAddressExtra;
-    }
-
-    public void setDeliveryAddressExtra(String deliveryAddressExtra) {
-        this.deliveryAddressExtra = deliveryAddressExtra;
-    }
-
-    public String getRiderClearance() {
-        return riderClearance;
-    }
-
-    public void setRiderClearance(String riderClearance) {
-        this.riderClearance = riderClearance;
-    }
-
-    public String getPickUpAddress() {
-        return pickUpAddress;
-    }
-
-    public void setPickUpAddress(String pickUpAddress) {
-        this.pickUpAddress = pickUpAddress;
-    }
-
-    public String getPickUpAddressLat() {
-        return pickUpAddressLat;
-    }
-
-    public void setPickUpAddressLat(String pickUpAddressLat) {
-        this.pickUpAddressLat = pickUpAddressLat;
-    }
-
-    public String getPickUpAddressLang() {
-        return pickUpAddressLang;
-    }
-
-    public void setPickUpAddressLang(String pickUpAddressLang) {
-        this.pickUpAddressLang = pickUpAddressLang;
-    }
-
-    public String getClientToken() {
-        return clientToken;
-    }
-
-    public void setClientToken(String clientToken) {
-        this.clientToken = clientToken;
-    }
-
-    public int getPickupCharge() {
-        return pickupCharge;
-    }
-
-    public void setPickupCharge(int pickupCharge) {
-        this.pickupCharge = pickupCharge;
-    }
-
-    public int getDeliveryCharge() {
-        return deliveryCharge;
-    }
-
-    public void setDeliveryCharge(int deliveryCharge) {
-        this.deliveryCharge = deliveryCharge;
-    }
-
-    public int getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(int productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public int getPickupTime() {
-        return pickupTime;
-    }
-
-    public void setPickupTime(int pickupTime) {
-        this.pickupTime = pickupTime;
-    }
-
-    public String getRequestPlacedTime() {
-        return requestPlacedTime;
-    }
-
-    public void setRequestPlacedTime(String requestPlacedTime) {
-        this.requestPlacedTime = requestPlacedTime;
-    }
-
-    public int getDeliveryStatus() {
-        return deliveryStatus;
-    }
-
-    public void setDeliveryStatus(int deliveryStatus) {
-        this.deliveryStatus = deliveryStatus;
-    }
-
-    public String getRiderName() {
-        return riderName;
-    }
-
-    public void setRiderName(String riderName) {
-        this.riderName = riderName;
-    }
-
-    public String getRiderid() {
-        return riderid;
-    }
-
-    public void setRiderid(String riderid) {
-        this.riderid = riderid;
-    }
-
-    public String getClientPaymentStatus() {
-        return clientPaymentStatus;
-    }
-
-    public void setClientPaymentStatus(String clientPaymentStatus) {
-        this.clientPaymentStatus = clientPaymentStatus;
-    }
-
-    public String getResponse() {
-        return response;
-    }
-
-    public void setResponse(String response) {
-        this.response = response;
-    }
-
-    public String getPickupCode() {
-        return pickupCode;
-    }
-
-    public void setPickupCode(String pickupCode) {
-        this.pickupCode = pickupCode;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public static Creator<ModelDeliveryRequest> getCREATOR() {
-        return CREATOR;
-    }
 
     protected ModelDeliveryRequest(Parcel in) {
         deliveryRequestId = in.readString();
@@ -361,10 +171,14 @@ public class ModelDeliveryRequest implements Parcelable {
         deliveryCharge = in.readInt();
         productPrice = in.readInt();
         pickupTime = in.readInt();
-        requestPlacedTime = in.readString();
+        pickedUpAt = in.readString();
+        deliveredAt = in.readString();
+        requestPlacedAt = in.readString();
         deliveryStatus = in.readInt();
+        isOnHold = in.readInt();
         riderName = in.readString();
         riderid = in.readString();
+        riderClearance = in.readString();
         clientPaymentStatus = in.readString();
         response = in.readString();
         pickupCode = in.readString();
@@ -389,10 +203,14 @@ public class ModelDeliveryRequest implements Parcelable {
         dest.writeInt(deliveryCharge);
         dest.writeInt(productPrice);
         dest.writeInt(pickupTime);
-        dest.writeString(requestPlacedTime);
+        dest.writeString(pickedUpAt);
+        dest.writeString(deliveredAt);
+        dest.writeString(requestPlacedAt);
         dest.writeInt(deliveryStatus);
+        dest.writeInt(isOnHold);
         dest.writeString(riderName);
         dest.writeString(riderid);
+        dest.writeString(riderClearance);
         dest.writeString(clientPaymentStatus);
         dest.writeString(response);
         dest.writeString(pickupCode);
@@ -415,4 +233,176 @@ public class ModelDeliveryRequest implements Parcelable {
             return new ModelDeliveryRequest[size];
         }
     };
+
+    public String getDeliveryRequestId() {
+        return deliveryRequestId;
+    }
+    public void setDeliveryRequestId(String deliveryRequestId) {
+        this.deliveryRequestId = deliveryRequestId;
+    }
+    public String getClientID() {
+        return clientID;
+    }
+    public void setClientID(String clientID) {
+        this.clientID = clientID;
+    }
+    public String getClientName() {
+        return clientName;
+    }
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+    public String getCustomerName() {
+        return customerName;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public String getCustomerNumber() {
+        return customerNumber;
+    }
+    public void setCustomerNumber(String customerNumber) {
+        this.customerNumber = customerNumber;
+    }
+    public String getProductType() {
+        return productType;
+    }
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+    public String getDeliveryArea() {
+        return deliveryArea;
+    }
+    public void setDeliveryArea(String deliveryArea) {
+        this.deliveryArea = deliveryArea;
+    }
+    public String getDeliveryAddressExtra() {
+        return deliveryAddressExtra;
+    }
+    public void setDeliveryAddressExtra(String deliveryAddressExtra) {
+        this.deliveryAddressExtra = deliveryAddressExtra;
+    }
+    public String getRiderClearance() {
+        return riderClearance;
+    }
+    public void setRiderClearance(String riderClearance) {
+        this.riderClearance = riderClearance;
+    }
+    public String getPickUpAddress() {
+        return pickUpAddress;
+    }
+    public void setPickUpAddress(String pickUpAddress) {
+        this.pickUpAddress = pickUpAddress;
+    }
+    public String getPickUpAddressLat() {
+        return pickUpAddressLat;
+    }
+    public void setPickUpAddressLat(String pickUpAddressLat) {
+        this.pickUpAddressLat = pickUpAddressLat;
+    }
+    public String getPickUpAddressLang() {
+        return pickUpAddressLang;
+    }
+    public void setPickUpAddressLang(String pickUpAddressLang) {
+        this.pickUpAddressLang = pickUpAddressLang;
+    }
+    public String getClientToken() {
+        return clientToken;
+    }
+    public void setClientToken(String clientToken) {
+        this.clientToken = clientToken;
+    }
+    public int getPickupCharge() {
+        return pickupCharge;
+    }
+    public void setPickupCharge(int pickupCharge) {
+        this.pickupCharge = pickupCharge;
+    }
+    public int getDeliveryCharge() {
+        return deliveryCharge;
+    }
+    public void setDeliveryCharge(int deliveryCharge) {
+        this.deliveryCharge = deliveryCharge;
+    }
+    public int getProductPrice() {
+        return productPrice;
+    }
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+    }
+    public int getPickupTime() {
+        return pickupTime;
+    }
+    public void setPickupTime(int pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+    public String getPickedUpAt() {
+        return pickedUpAt;
+    }
+    public void setPickedUpAt(String pickedUpAt) {
+        this.pickedUpAt = pickedUpAt;
+    }
+    public String getDeliveredAt() {
+        return deliveredAt;
+    }
+    public void setDeliveredAt(String deliveredAt) {
+        this.deliveredAt = deliveredAt;
+    }
+    public String getRequestPlacedAt() {
+        return requestPlacedAt;
+    }
+    public void setRequestPlacedAt(String requestPlacedAt) {
+        this.requestPlacedAt = requestPlacedAt;
+    }
+    public int getDeliveryStatus() {
+        return deliveryStatus;
+    }
+    public void setDeliveryStatus(int deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+    public String getRiderName() {
+        return riderName;
+    }
+    public void setRiderName(String riderName) {
+        this.riderName = riderName;
+    }
+    public String getRiderid() {
+        return riderid;
+    }
+    public void setRiderid(String riderid) {
+        this.riderid = riderid;
+    }
+    public String getClientPaymentStatus() {
+        return clientPaymentStatus;
+    }
+    public void setClientPaymentStatus(String clientPaymentStatus) {
+        this.clientPaymentStatus = clientPaymentStatus;
+    }
+    public String getResponse() {
+        return response;
+    }
+    public void setResponse(String response) {
+        this.response = response;
+    }
+    public String getPickupCode() {
+        return pickupCode;
+    }
+    public void setPickupCode(String pickupCode) {
+        this.pickupCode = pickupCode;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public int isOnHold() {
+        return isOnHold;
+    }
+    public void setOnHold(int onHold) {
+        isOnHold = onHold;
+    }
+
+
+
 }

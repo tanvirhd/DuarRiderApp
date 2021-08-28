@@ -190,41 +190,6 @@ public class ActivityHome extends AppCompatActivity implements  NavigationView.O
         return true;
     }
 
-    @Override
-    public void onMyWayToPickUpClicked(ModelDeliveryRequest assignedDelivery) {
-        dialogLoading.show();
-        assignedDelivery.setDeliveryStatus(3);
-        viewModelRiderApp.updateDeliveryStatusByRequestId(assignedDelivery).observe(ActivityHome.this,
-                new Observer<ModelResponse>() {
-                    @Override
-                    public void onChanged(ModelResponse modelResponse) {
-                        if(modelResponse!=null&&modelResponse.getResponse()==1){
-                            getAssignedRidesFromServer();
-                        }else{
-                            dialogLoading.dismiss();
-                            Toast.makeText(ActivityHome.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    @Override
-    public void onMyWayToDeliveryClicked(ModelDeliveryRequest assignedDelivery) {
-        dialogLoading.show();
-        assignedDelivery.setDeliveryStatus(5);
-        viewModelRiderApp.updateDeliveryStatusByRequestId(assignedDelivery).observe(ActivityHome.this,
-                new Observer<ModelResponse>() {
-                    @Override
-                    public void onChanged(ModelResponse modelResponse) {
-                        if(modelResponse!=null&&modelResponse.getResponse()==1){
-                            getAssignedRidesFromServer();
-                        }else{
-                            dialogLoading.dismiss();
-                            Toast.makeText(ActivityHome.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
 
     @Override
     public void onAssignedRideClicked(ModelDeliveryRequest delivery) {
